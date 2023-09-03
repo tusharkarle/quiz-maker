@@ -6,10 +6,6 @@ import { Constants } from '../utils/constants';
 
 @Injectable()
 export class ApiService {
-	failure: string = Constants.failureTxt;
-
-	token: string = 'test_token';
-
 	constructor(
 		private http: HttpClient,
 		private sharedService: SharedService
@@ -20,73 +16,13 @@ export class ApiService {
 	}
 
 	handleErrorResponse(error: any, url?: string) {
-		this.sharedService.openSnackBar(this.failure, `Failed get response for ${url}!`);
+		this.sharedService.openSnackBar(Constants.failureTxt, `Failed get response for ${url}! due to ${error} `);
 	}
 
-	callGetApi(apiurl: string, reqParams?: any) {
+	callGetApi(apiurl: string, reqParams?: HttpParams) {
 		return this.http
 			.get(apiurl, {
 				params: reqParams,
-				headers: {},
-			})
-			.pipe(
-				tap(
-					(data: any) => this.handleResponse(data),
-					(error: Error) => this.handleErrorResponse(error, apiurl)
-				)
-			);
-	}
-
-	callPostApi(apiurl: string, body: any, headers?: any) {
-		let header = {
-			authorization: this.token,
-		};
-		if (headers) {
-			header = headers;
-		}
-		return this.http
-			.post(apiurl, body, {
-				headers: header,
-			})
-			.pipe(
-				tap(
-					(data: any) => this.handleResponse(data),
-					(error: Error) => this.handleErrorResponse(error, apiurl)
-				)
-			);
-	}
-
-	callPutApi(apiurl: string, body: any) {
-		return this.http
-			.put(apiurl, body, {
-				headers: {},
-			})
-			.pipe(
-				tap(
-					(data: any) => this.handleResponse(data),
-					(error: Error) => this.handleErrorResponse(error, apiurl)
-				)
-			);
-	}
-
-	callPatchApi(apiurl: string, body: any) {
-		return this.http
-			.patch(apiurl, body, {
-				headers: {
-					contentType: 'application/merge-patch+json',
-				},
-			})
-			.pipe(
-				tap(
-					(data: any) => this.handleResponse(data),
-					(error: Error) => this.handleErrorResponse(error, apiurl)
-				)
-			);
-	}
-
-	callDeleteApi(apiurl: string) {
-		return this.http
-			.delete(apiurl, {
 				headers: {},
 			})
 			.pipe(

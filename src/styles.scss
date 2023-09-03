@@ -11,26 +11,38 @@ body {
     overflow: hidden;
 }
 
+// padding
+.py-24{
+    padding: 24px 0 !important;
+}
+
+// border
+
+.border-b-ebb{
+    border-bottom: 1px solid rgb(89, 88, 88);
+}
+
+
 // Buttons
 
 .white-btn {
     color: green !important;
-    background-color: white !important;
+    background-color: white ;
     border-color: green !important;
 }
 
 .white-btn-hover {
     &:hover {
         color: white !important;
-        background-color: green !important;
-        border-color: green !important;
+        background-color: green ;
+        border-color: green ;
     }
 
 }
 .green-btn {
     color: white !important;
     background-color: green !important;
-    border-color: green !important;
+    border-color: green ;
 }
 
 .red-btn {
@@ -40,7 +52,7 @@ body {
 }
 
 .yellow-btn {
-    color: black !important;
+    color: black;
     background-color: yellow !important;
     border-color: yellow !important;
 }

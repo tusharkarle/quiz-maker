@@ -11,11 +11,13 @@ export class SharedService {
 	public showLoader: Subject<boolean> = new Subject<boolean>();
 	loaderStatus = this.showLoader.asObservable();
 
-	public quizQuestions: Subject<Interface.Question[]> = new Subject<Interface.Question[]>();
-	quizQuestionsObs = this.quizQuestions.asObservable();
-
 	constructor(private snackBar: MatSnackBar) {}
 
+	/**
+	 * @Created : Tushar Karle
+	 * @Updated : Tushar Karle
+	 * @description: Opens snackbar
+	 */
 	openSnackBar(value: string, msg: string) {
 		this.snackBar.openFromComponent(SnackBarComponent, {
 			duration: Constants.notificationDuration,
@@ -26,14 +28,20 @@ export class SharedService {
 		});
 	}
 
+	/**
+	 * @Created : Tushar Karle
+	 * @Updated : Tushar Karle
+	 * @description: Sets the loader status
+	 */
 	setShowLoaderStatus(status: boolean) {
 		this.showLoader.next(status);
 	}
 
-	setQuizQuestions(questions: Interface.Question[]) {
-		this.quizQuestions.next(questions);
-	}
-
+	/**
+	 * @Created : Tushar Karle
+	 * @Updated : Tushar Karle
+	 * @description: Calculates class which should be applied according to score obtained
+	 */
 	getScoreBtnClass(score: number) {
 		const scoreMetaData: Interface.ScoreClass | undefined = Constants.scoreClassList.find(
 			(scoreColor: Interface.ScoreClass) => scoreColor.from <= score && scoreColor.to >= score

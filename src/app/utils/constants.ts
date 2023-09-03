@@ -5,7 +5,7 @@ export class Constants {
 	public static readonly successTxt: string = 'Success';
 	public static readonly questionAnsListTxt: string = 'questionsAnsList';
 	public static readonly greenBtnTxt: string = 'green-btn';
-    public static readonly redBtnTxt: string = 'red-btn';
+	public static readonly redBtnTxt: string = 'red-btn';
 	public static readonly notificationDuration: number = 2000;
 
 	public static readonly createQuizRoute: string = 'home/create-quiz';

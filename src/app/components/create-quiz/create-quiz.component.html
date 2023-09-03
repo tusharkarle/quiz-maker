@@ -1,10 +1,13 @@
 <div class="flex flex-col items-center ">
-    <p class="text-3xl  align-middle justify-center w-full text-center p-5">Quiz Maker</p>
+    <p class="text-3xl  align-middle justify-center w-full text-center p-5 border-b-ebb">Quiz Maker</p>
 
     <div class="w-full flex justify-center items-center p-5 gap-8" [formGroup]="questionTypeForm">
         <mat-form-field appearance="outline" subscriptSizing="dynamic">
             <mat-label>Select a Category</mat-label>
             <mat-select formControlName="category" name="category" id="categorySelect">
+                <mat-option value="">
+                    None
+                </mat-option>
                 <mat-option *ngFor="let category of categoriesList" [value]="category.id">
                     {{category?.name}}
                 </mat-option>
@@ -14,30 +17,40 @@
         <mat-form-field appearance="outline" subscriptSizing="dynamic">
             <mat-label>Select Difficulty</mat-label>
             <mat-select formControlName="difficulty" name="difficulty" id="difficultySelect">
+                <mat-option value="">
+                    None
+                </mat-option>
                 <mat-option *ngFor="let difficulty of difficultyList" [value]="difficulty.value">
                     {{difficulty?.name}}
                 </mat-option>
             </mat-select>
         </mat-form-field>
-        <button mat-flat-button id="createBtn" (click)="getQuestionsList()"
-            [disabled]="!this.questionTypeForm.valid" color="primary">
+        <button mat-flat-button id="createBtn" (click)="getQuestionsList()" [disabled]="!this.questionTypeForm.valid"
+            color="primary">
             Create
         </button>
     </div>
 
-    <div class="w-6/12 flex flex-col justify-center align-middle gap-4 mt-6" *ngIf="questionsAnsList?.length">
+    <div class="w-6/12 flex flex-col justify-center align-middle gap-4 mt-6"
+        *ngIf="questionsAnsList?.length ; else elseTemplate">
         <div *ngFor="let question of questionsAnsList" class="flex-col gap-4">
             <p>{{question?.title}}</p>
             <div class="flex gap-4 ">
-                <button mat-stroked-button class="white-btn white-btn-hover" [ngClass]="answer.selected ? 'green-btn': 'white-btn' "
-                    *ngFor="let answer of question?.answerList" (click)="selectAnswer(question,answer)">
+                <button mat-stroked-button class="white-btn white-btn-hover"  [ngClass]="{'green-btn': answer?.selected}"
+                   *ngFor="let answer of question?.answerList"
+                    (click)="selectAnswer(question,answer)">
                     {{answer?.title}}
                 </button>
             </div>
         </div>
-        <button class="text-xl py-3 mt-4" mat-flat-button *ngIf="selectedAnsCount === questionsAnsList?.length" (click)="submit()"
-            color="primary">
+        <button class="text-xl py-3 mt-4" mat-flat-button *ngIf="selectedAnsCount === questionsAnsList?.length"
+            (click)="submit()" color="primary">
             Submit
         </button>
     </div>
+    <ng-template #elseTemplate>
+        <div class="mt-6">
+            <p class="text-center text-xl mt-6"> Please select category and difficulty to create quiz !! </p>
+        </div>
+    </ng-template>
 </div>
