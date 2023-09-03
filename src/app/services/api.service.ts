@@ -8,10 +8,12 @@ import { Constants } from '../utils/constants';
 export class ApiService {
 	failure: string = Constants.failureTxt;
 
-	token:string = 'test_token';
+	token: string = 'test_token';
 
-	constructor(private http: HttpClient, private sharedService: SharedService) {}
-
+	constructor(
+		private http: HttpClient,
+		private sharedService: SharedService
+	) {}
 
 	handleResponse(response: any) {
 		return response;
@@ -25,9 +27,7 @@ export class ApiService {
 		return this.http
 			.get(apiurl, {
 				params: reqParams,
-				headers: {
-					authorization: this.token,
-				},
+				headers: {},
 			})
 			.pipe(
 				tap(
@@ -59,9 +59,7 @@ export class ApiService {
 	callPutApi(apiurl: string, body: any) {
 		return this.http
 			.put(apiurl, body, {
-				headers: {
-					authorization: this.token,
-				},
+				headers: {},
 			})
 			.pipe(
 				tap(
@@ -75,7 +73,6 @@ export class ApiService {
 		return this.http
 			.patch(apiurl, body, {
 				headers: {
-					authorization: this.token,
 					contentType: 'application/merge-patch+json',
 				},
 			})
@@ -90,9 +87,7 @@ export class ApiService {
 	callDeleteApi(apiurl: string) {
 		return this.http
 			.delete(apiurl, {
-				headers: {
-					authorization: this.token,
-				},
+				headers: {},
 			})
 			.pipe(
 				tap(

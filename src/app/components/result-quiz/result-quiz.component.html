@@ -1,0 +1,30 @@
+<div class="flex flex-col items-center ">
+    <p class="text-3xl  align-middle justify-center w-full text-center p-5 ">Results</p>
+
+    <div class="w-6/12 flex flex-col justify-center align-middle gap-4 mt-6">
+        <div *ngIf="questionsAnsList?.length ; else elseTemplate"
+            class=" flex flex-col justify-center align-middle gap-4">
+            <div *ngFor="let question of questionsAnsList" class="flex-col gap-4">
+                <p>{{question?.title}}</p>
+                <div class="flex gap-4 ">
+                    <button mat-stroked-button class="white-btn" [ngClass]="answer.class"
+                        *ngFor="let answer of question.answerList;">
+                        {{answer.title}}
+                    </button>
+                </div>
+            </div>
+            <p class="text-center p-1 text-white text-xl" [ngClass]="scoreData.class">Correct ans are
+                {{scoreData.correct}} out of
+                {{scoreData.total}}</p>
+        </div>
+
+        <ng-template #elseTemplate>
+            <p class="text-center text-xl"> Please answer quiz to see results !! </p>
+        </ng-template>
+
+        <button class="p-2 text-xl" mat-flat-button (click)="createQuiz()" color="primary">
+            Create New Quizz
+        </button>
+
+    </div>
+</div>

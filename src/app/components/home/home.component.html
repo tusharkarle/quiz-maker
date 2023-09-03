@@ -1,0 +1,8 @@
+<router-outlet></router-outlet>
+<ng-container *ngIf="isLoader">
+	<div class="loader-background">
+		<div class="loader-position">
+			<mat-spinner [color]="'primary'"> </mat-spinner>
+		</div>
+	</div>
+</ng-container>
