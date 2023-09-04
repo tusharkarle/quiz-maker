@@ -5,8 +5,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class TextFormatterPipe implements PipeTransform {
 	transform(value: string): string | null {
-		const parser = new DOMParser();
-		const decodedValue = parser.parseFromString(value, 'text/html').body.textContent;
+		const parser: DOMParser = new DOMParser();
+		const decodedValue: string | null = parser.parseFromString(value, 'text/html').body.textContent;
 		return decodedValue;
 	}
 }
