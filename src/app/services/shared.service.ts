@@ -102,15 +102,15 @@ export class SharedService {
 	/**
 	 * @description: Sets the data in session storage for the given key
 	 */
-	setStorage(key: string, value: Interface.Question[]): void {
-		sessionStorage.setItem(key, JSON.stringify(value));
+	setQustionsInSessionStorage(value: Interface.Question[]): void {
+		sessionStorage.setItem(Constants.questionAnsListTxt, JSON.stringify(value));
 	}
 
 	/**
 	 * @description: Get the data stored in session storage
 	 */
-	getStorage(key: string): Interface.Question[] | [] {
-		const data = sessionStorage.getItem(key);
+	getQustionsFromSessionStorage(): Interface.Question[] | [] {
+		const data = sessionStorage.getItem(Constants.questionAnsListTxt);
 		return data && data !== 'undefined' ? JSON.parse(data) : [];
 	}
 }

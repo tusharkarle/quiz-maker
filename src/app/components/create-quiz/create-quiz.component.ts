@@ -112,7 +112,7 @@ export class CreateQuizComponent implements OnInit {
 	 * @description: Stores the list of questions and answers in session storage and navigates to results component
 	 */
 	submit(): void {
-		this.sharedService.setStorage(Constants.questionAnsListTxt, this.questionsAnsList);
+		this.sharedService.setQustionsInSessionStorage(this.questionsAnsList);
 		this.router.navigate([Constants.quizResultRoute]);
 	}
 

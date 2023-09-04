@@ -22,7 +22,7 @@ export class ResultQuizComponent implements OnInit, OnDestroy {
 	 * @description: Gets the list of questions and answers from session storage and calls processQuestions function
 	 */
 	ngOnInit(): void {
-		this.questionsAnsList = this.sharedService.getStorage(Constants.questionAnsListTxt);
+		this.questionsAnsList = this.sharedService.getQustionsFromSessionStorage();
 		if (this.questionsAnsList?.length) {
 			this.processQuestions();
 		}
@@ -63,7 +63,7 @@ export class ResultQuizComponent implements OnInit, OnDestroy {
 	 * @description: It empties the list of questions and answer saved in session storage
 	 */
 	ngOnDestroy(): void {
-		this.sharedService.setStorage(Constants.questionAnsListTxt, []);
+		this.sharedService.setQustionsInSessionStorage([]);
 		this.questionsAnsList = [];
 	}
 }
