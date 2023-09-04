@@ -4,19 +4,19 @@ import { CreateQuizComponent } from './components/create-quiz/create-quiz.compon
 import { ResultQuizComponent } from './components/result-quiz/result-quiz.component';
 
 const routes: Routes = [
-    { path: '', redirectTo: 'create-quiz', pathMatch: 'full' },
-    {
-        path: 'create-quiz',
-        component: CreateQuizComponent,
-    },
-    {
-        path: 'result-quiz',
-        component: ResultQuizComponent,
-    },
+	{ path: '', redirectTo: 'create-quiz', pathMatch: 'full' },
+	{
+		path: 'create-quiz',
+		component: CreateQuizComponent,
+	},
+	{
+		path: 'result-quiz',
+		component: ResultQuizComponent,
+	},
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes)],
-    exports: [RouterModule],
+	imports: [RouterModule.forRoot(routes)],
+	exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

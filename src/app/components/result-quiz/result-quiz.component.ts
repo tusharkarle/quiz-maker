@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { SharedService } from 'src/app/services/shared.service';
+import { QuizService } from 'src/app/services/quiz.service';
 import { Constants } from 'src/app/utils/constants';
 import { Interface } from 'src/app/utils/interfaces';
 
@@ -15,14 +15,14 @@ export class ResultQuizComponent implements OnInit, OnDestroy {
 
 	constructor(
 		private router: Router,
-		private sharedService: SharedService
+		private quizService: QuizService
 	) {}
 
 	/**
 	 * @description: Gets the list of questions and answers from session storage and calls processQuestions function
 	 */
 	ngOnInit(): void {
-		this.questionsAnsList = this.sharedService.getQustionsFromSessionStorage();
+		this.questionsAnsList = this.quizService.getQustionsFromSessionStorage();
 		if (this.questionsAnsList?.length) {
 			this.processQuestions();
 		}
@@ -34,22 +34,19 @@ export class ResultQuizComponent implements OnInit, OnDestroy {
 	processQuestions(): void {
 		this.scoreData.correct = 0;
 		this.scoreData.total = this.questionsAnsList?.length;
-		this.questionsAnsList.map((questionData: Interface.Question) => {
-			questionData.answerList.map((answer: Interface.Answer) => {
-				// if selected answer is correct
-				if (answer.correct && answer.selected) {
-					answer.class = Constants.greenBtnTxt;
-					this.scoreData.correct += 1;
-					// if correct answer is not selected
-				} else if (!answer.correct && answer.selected) {
-					answer.class = Constants.redBtnTxt;
-					// if answer is neither correct nor selected
-				} else if (answer.correct && !answer.selected) {
+		this.questionsAnsList?.map((questionData: Interface.Question) => {
+			questionData?.answerList.map((answer: Interface.Answer) => {
+				if (answer?.selected) {
+					answer.class = answer.correct ? Constants.greenBtnTxt : Constants.redBtnTxt;
+					if (answer.correct) {
+						this.scoreData.correct += 1;
+					}
+				} else if (answer?.correct) {
 					answer.class = Constants.greenBtnTxt;
 				}
 			});
 		});
-		this.scoreData.class = this.sharedService.getScoreBtnClass(this.scoreData.correct);
+		this.scoreData.class = this.quizService.getScoreBtnClass(this.scoreData.correct);
 	}
 
 	/**
@@ -63,7 +60,7 @@ export class ResultQuizComponent implements OnInit, OnDestroy {
 	 * @description: It empties the list of questions and answer saved in session storage
 	 */
 	ngOnDestroy(): void {
-		this.sharedService.setQustionsInSessionStorage([]);
+		this.quizService.setQustionsInSessionStorage([]);
 		this.questionsAnsList = [];
 	}
 }

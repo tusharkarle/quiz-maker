@@ -14,7 +14,7 @@ module.exports = {
 				'plugin:prettier/recommended',
 			],
 			rules: {
-				'max-len': ['error', { code: 180, ignoreComments: true }],
+				'max-len': ['error', { code: 200, ignoreComments: true }],
 				'no-inferrable-types': 0,
 				'no-console': ['error', { allow: ['warn', 'error'] }],
 				'no-debugger': 'error',

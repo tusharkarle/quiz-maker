@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { SharedService } from './services/shared.service';
+import { QuizService } from './services/quiz.service';
 
 @Component({
 	selector: 'app-root',
@@ -11,7 +11,7 @@ export class AppComponent {
 	isLoader: boolean = false;
 	handlerShowLoader: Subscription = new Subscription();
 
-	constructor(private sharedService: SharedService) {
+	constructor(private quizService: QuizService) {
 		this.subscribeServiceData();
 	}
 
@@ -19,7 +19,7 @@ export class AppComponent {
 	 * @description: Subcribe to loader status obserable and displays the loader accordingly
 	 */
 	subscribeServiceData(): void {
-		this.handlerShowLoader = this.sharedService?.loaderStatus.subscribe((status: boolean) => {
+		this.handlerShowLoader = this.quizService?.loaderStatus.subscribe((status: boolean) => {
 			this.isLoader = status;
 		});
 	}

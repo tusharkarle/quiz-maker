@@ -9,13 +9,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-
 import { AppComponent } from './app.component';
 import { SnackBarComponent } from './modals/snack-bar/snack-bar.component';
 import { CreateQuizComponent } from './components/create-quiz/create-quiz.component';
 import { ResultQuizComponent } from './components/result-quiz/result-quiz.component';
-
-import { SharedService } from './services/shared.service';
+import { QuizService } from './services/quiz.service';
 
 @NgModule({
 	declarations: [AppComponent, SnackBarComponent, CreateQuizComponent, ResultQuizComponent],
@@ -32,7 +30,7 @@ import { SharedService } from './services/shared.service';
 		MatButtonModule,
 		MatProgressSpinnerModule,
 	],
-	providers: [SharedService],
+	providers: [QuizService],
 	bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -5,11 +5,11 @@ import { Enum } from '../utils/enums';
 import { SnackBarComponent } from '../modals/snack-bar/snack-bar.component';
 import { Constants } from '../utils/constants';
 import { Interface } from '../utils/interfaces';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { EndPoints } from '../utils/endpoints';
+import { HttpClient } from '@angular/common/http';
+import { ENVIRONMENT } from 'src/environments/environment';
 
 @Injectable()
-export class SharedService {
+export class QuizService {
 	public showLoader: Subject<boolean> = new Subject<boolean>();
 	loaderStatus = this.showLoader.asObservable();
 
@@ -52,11 +52,11 @@ export class SharedService {
 	 * @description: Returns the list of categories
 	 */
 	getAllCategories(): Observable<Interface.TriviaCategories> {
-		return this.http.get<Interface.TriviaCategories>(EndPoints.categoryList).pipe(
+		return this.http.get<Interface.TriviaCategories>(ENVIRONMENT?.categoryList).pipe(
 			tap(
-				(response:Interface.TriviaCategories) => response,
+				(response: Interface.TriviaCategories) => response,
 				(error: Error) =>
-					this.openSnackBar(Constants.failureTxt, `Failed get response for ${EndPoints.categoryList}! due to ${error} `)
+					this.openSnackBar(Constants.failureTxt, `Failed get response for ${ENVIRONMENT?.categoryList}! due to ${error} `)
 			)
 		);
 	}
@@ -64,16 +64,14 @@ export class SharedService {
 	/**
 	 * @description: Returns the list of questions as per the payload
 	 */
-	getQuestionsList(reqParams:string): Observable<Interface.QuestionResponse> {
-		return this.http
-			.get<Interface.QuestionResponse>(`${EndPoints.questionsList}?${reqParams}`)
-			.pipe(
-				tap(
-					(response:Interface.QuestionResponse) => response,
-					(error: Error) =>
-						this.openSnackBar(Constants.failureTxt, `Failed get response for ${EndPoints.questionsList}! due to ${error} `)
-				)
-			);
+	getQuestionsList(reqParams: string): Observable<Interface.QuestionResponse> {
+		return this.http.get<Interface.QuestionResponse>(`${ENVIRONMENT?.questionsList}?${reqParams}`).pipe(
+			tap(
+				(response: Interface.QuestionResponse) => response,
+				(error: Error) =>
+					this.openSnackBar(Constants.failureTxt, `Failed get response for ${ENVIRONMENT?.questionsList}! due to ${error} `)
+			)
+		);
 	}
 
 	/**
@@ -88,6 +86,6 @@ export class SharedService {
 	 */
 	getQustionsFromSessionStorage(): Interface.Question[] | [] {
 		const data = sessionStorage.getItem(Constants.questionAnsListTxt);
-		return data && data !== 'undefined' ? JSON.parse(data) : [];
+		return data ? JSON.parse(data) : [];
 	}
 }
