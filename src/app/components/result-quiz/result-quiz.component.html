@@ -4,11 +4,11 @@
         <div *ngIf="questionsAnsList?.length ; else elseTemplate"
             class="flex flex-col justify-center align-middle gap-4">
             <div *ngFor="let question of questionsAnsList" class="flex-col gap-4">
-                <p>{{question?.title}}</p>
+                <p>{{question.title | textFormatter }}</p>
                 <div class="flex gap-4 ">
                     <button mat-stroked-button class="white-btn" [ngClass]="answer.class"
                         *ngFor="let answer of question.answerList;">
-                        {{answer.title}}
+                        {{answer.title | textFormatter}}
                     </button>
                 </div>
             </div>

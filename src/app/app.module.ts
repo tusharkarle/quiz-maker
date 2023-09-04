@@ -14,9 +14,10 @@ import { SnackBarComponent } from './modals/snack-bar/snack-bar.component';
 import { CreateQuizComponent } from './components/create-quiz/create-quiz.component';
 import { ResultQuizComponent } from './components/result-quiz/result-quiz.component';
 import { QuizService } from './services/quiz.service';
+import { TextFormatterPipe } from './pipes/text-formatter.pipe';
 
 @NgModule({
-	declarations: [AppComponent, SnackBarComponent, CreateQuizComponent, ResultQuizComponent],
+	declarations: [AppComponent, SnackBarComponent, CreateQuizComponent, ResultQuizComponent, TextFormatterPipe],
 	imports: [
 		BrowserModule,
 		AppRoutingModule,

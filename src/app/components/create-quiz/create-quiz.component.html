@@ -8,7 +8,7 @@
                     None
                 </mat-option>
                 <mat-option *ngFor="let category of categoriesList" [value]="category.id">
-                    {{category?.name}}
+                    {{category.name | textFormatter}}
                 </mat-option>
             </mat-select>
         </mat-form-field>
@@ -19,7 +19,7 @@
                     None
                 </mat-option>
                 <mat-option *ngFor="let difficulty of difficultyList" [value]="difficulty.value">
-                    {{difficulty?.name}}
+                    {{difficulty.name | textFormatter}}
                 </mat-option>
             </mat-select>
         </mat-form-field>
@@ -31,12 +31,12 @@
     <div class="w-6/12 flex flex-col justify-center align-middle gap-4 mt-6"
         *ngIf="questionsAnsList?.length ; else elseTemplate">
         <div *ngFor="let question of questionsAnsList" class="flex-col gap-4">
-            <p>{{question?.title}}</p>
+            <p>{{question.title | textFormatter}}</p>
             <div class="flex gap-4 ">
                 <button mat-stroked-button class="white-btn white-btn-hover"  [ngClass]="{'green-btn': answer?.selected}"
                    *ngFor="let answer of question?.answerList"
                     (click)="selectAnswer(question,answer)">
-                    {{answer?.title}}
+                    {{answer.title  | textFormatter}}
                 </button>
             </div>
         </div>
