@@ -5,7 +5,7 @@ import { Enum } from '../utils/enums';
 import { SnackBarComponent } from '../modals/snack-bar/snack-bar.component';
 import { Constants } from '../utils/constants';
 import { Interface } from '../utils/interfaces';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { EndPoints } from '../utils/endpoints';
 
 @Injectable()
@@ -52,9 +52,9 @@ export class SharedService {
 	 * @description: Returns the list of categories
 	 */
 	getAllCategories(): Observable<Interface.TriviaCategories> {
-		return this.http.get(EndPoints.categoryList).pipe(
+		return this.http.get<Interface.TriviaCategories>(EndPoints.categoryList).pipe(
 			tap(
-				(response: any) => response,
+				(response:Interface.TriviaCategories) => response,
 				(error: Error) =>
 					this.openSnackBar(Constants.failureTxt, `Failed get response for ${EndPoints.categoryList}! due to ${error} `)
 			)
@@ -64,39 +64,16 @@ export class SharedService {
 	/**
 	 * @description: Returns the list of questions as per the payload
 	 */
-	getQuestionsList(payload?: Interface.QuestionApiPayload): Observable<Interface.QuestionResponse> {
-		const reqParams: HttpParams | undefined = this.prepareRequestParams(payload);
+	getQuestionsList(reqParams:string): Observable<Interface.QuestionResponse> {
 		return this.http
-			.get(EndPoints.questionsList, {
-				params: reqParams,
-			})
+			.get<Interface.QuestionResponse>(`${EndPoints.questionsList}?${reqParams}`)
 			.pipe(
 				tap(
-					(response: any) => response,
+					(response:Interface.QuestionResponse) => response,
 					(error: Error) =>
 						this.openSnackBar(Constants.failureTxt, `Failed get response for ${EndPoints.questionsList}! due to ${error} `)
 				)
 			);
-	}
-
-	/**
-	 * @description: Prepares for the Request params
-	 */
-	prepareRequestParams(params: any): HttpParams | undefined {
-		if (!params) {
-			return undefined;
-		}
-		let httpParams = new HttpParams();
-		Object.keys(params).forEach((key) => {
-			if (params[key] instanceof Object) {
-				if (Object.keys(params[key]).length) {
-					httpParams = httpParams.append(key, JSON.stringify(params[key]));
-				}
-			} else if (params[key].toString().length) {
-				httpParams = httpParams.append(key, params[key]);
-			}
-		});
-		return httpParams;
 	}
 
 	/**
