@@ -14,12 +14,11 @@ import { AppComponent } from './app.component';
 import { SnackBarComponent } from './modals/snack-bar/snack-bar.component';
 import { CreateQuizComponent } from './components/create-quiz/create-quiz.component';
 import { ResultQuizComponent } from './components/result-quiz/result-quiz.component';
-import { HomeComponent } from './components/home/home.component';
 
 import { SharedService } from './services/shared.service';
 
 @NgModule({
-	declarations: [AppComponent, SnackBarComponent, CreateQuizComponent, ResultQuizComponent, HomeComponent],
+	declarations: [AppComponent, SnackBarComponent, CreateQuizComponent, ResultQuizComponent],
 	imports: [
 		BrowserModule,
 		AppRoutingModule,

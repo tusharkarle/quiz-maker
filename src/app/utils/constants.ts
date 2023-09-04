@@ -8,8 +8,8 @@ export class Constants {
 	public static readonly redBtnTxt: string = 'red-btn';
 	public static readonly notificationDuration: number = 2000;
 
-	public static readonly createQuizRoute: string = 'home/create-quiz';
-	public static readonly quizResultRoute: string = 'home/result-quiz';
+	public static readonly createQuizRoute: string = 'create-quiz';
+	public static readonly quizResultRoute: string = 'result-quiz';
 
 	public static readonly difficultyLevelList: Interface.NameValue[] = [
 		{
