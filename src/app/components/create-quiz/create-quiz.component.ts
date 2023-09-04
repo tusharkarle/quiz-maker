@@ -96,7 +96,7 @@ export class CreateQuizComponent implements OnInit {
 				if (selectedQuestion?.title === question?.title) {
 					question.selected = true;
 					question.answerList.map((answer: Interface.Answer) => {
-						answer.selected = answer?.title === selectedAns?.title ? true : false;
+						answer.selected = answer?.title === selectedAns?.title;
 					});
 				}
 				if (question?.selected) {
