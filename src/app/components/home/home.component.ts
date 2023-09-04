@@ -16,35 +16,20 @@ export class HomeComponent {
 	}
 
 	/**
-	 * @Created : Tushar Karle
-	 * @Updated : Tushar Karle
 	 * @description: Subcribe to loader status obserable and displays the loader accordingly
 	 */
-	subscribeServiceData() {
+	subscribeServiceData(): void {
 		this.handlerShowLoader = this.sharedService?.loaderStatus.subscribe((status: boolean) => {
-			setTimeout(() => {
-				this.isLoader = status;
-			}, 0);
+			this.isLoader = status;
 		});
 	}
 
 	/**
-	 * @Created : Tushar Karle
-	 * @Updated : Tushar Karle
 	 * @description: Unsubscribe the subscription of loader
 	 */
-	unSubscribeServiceData() {
+	ngOnDestroy(): void {
 		if (this.handlerShowLoader) {
 			this.handlerShowLoader.unsubscribe();
 		}
-	}
-
-	/**
-	 * @Created : Tushar Karle
-	 * @Updated : Tushar Karle
-	 * @description: calls  unSubscribeServiceData function
-	 */
-	ngOnDestroy() {
-		this.unSubscribeServiceData();
 	}
 }

@@ -1,6 +1,5 @@
 <div class="flex flex-col items-center ">
-    <p class="text-3xl  align-middle justify-center w-full text-center p-5 border-b-ebb">Quiz Maker</p>
-
+    <p class="text-3xl  align-middle justify-center w-full text-center p-5 border-b-ebb bg-tut">Quiz Maker</p>
     <div class="w-full flex justify-center items-center p-5 gap-8" [formGroup]="questionTypeForm">
         <mat-form-field appearance="outline" subscriptSizing="dynamic">
             <mat-label>Select a Category</mat-label>
@@ -13,7 +12,6 @@
                 </mat-option>
             </mat-select>
         </mat-form-field>
-
         <mat-form-field appearance="outline" subscriptSizing="dynamic">
             <mat-label>Select Difficulty</mat-label>
             <mat-select formControlName="difficulty" name="difficulty" id="difficultySelect">
@@ -25,12 +23,11 @@
                 </mat-option>
             </mat-select>
         </mat-form-field>
-        <button mat-flat-button id="createBtn" (click)="getQuestionsList()" [disabled]="!this.questionTypeForm.valid"
+        <button mat-flat-button id="createBtn" class="h-px-50  w-px-100" (click)="getQuestionsList()" [disabled]="!this.questionTypeForm.valid"
             color="primary">
             Create
         </button>
     </div>
-
     <div class="w-6/12 flex flex-col justify-center align-middle gap-4 mt-6"
         *ngIf="questionsAnsList?.length ; else elseTemplate">
         <div *ngFor="let question of questionsAnsList" class="flex-col gap-4">

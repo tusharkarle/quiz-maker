@@ -1,6 +1,5 @@
 <div class="flex flex-col items-center ">
-    <p class="text-3xl  align-middle justify-center w-full text-center p-5 border-b-ebb">Results</p>
-
+    <p class="text-3xl  align-middle justify-center w-full text-center p-5 border-b-ebb bg-tut">Results</p>
     <div class="w-6/12 flex flex-col justify-center align-middle gap-4 mt-6">
         <div *ngIf="questionsAnsList?.length ; else elseTemplate"
             class="flex flex-col justify-center align-middle gap-4">
@@ -13,20 +12,15 @@
                     </button>
                 </div>
             </div>
-
-            <p class="text-xl py-2 text-center" mat-stroked-button [ngClass]="scoreData.class">Correct answers are
-                {{scoreData.correct}} out of
-                {{scoreData.total}}
+            <p class="text-xl py-2 text-center" mat-stroked-button [ngClass]="scoreData.class">
+                Correct answers are {{scoreData.correct}} out of {{scoreData.total}}
             </p>
         </div>
-
         <ng-template #elseTemplate>
             <p class="text-center text-xl"> Please answer quiz to see results !! </p>
         </ng-template>
-
         <button class="text-xl py-24" mat-flat-button (click)="createQuiz()" color="primary">
             Create New Quiz
         </button>
-
     </div>
 </div>

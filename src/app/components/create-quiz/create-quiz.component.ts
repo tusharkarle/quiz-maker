@@ -1,12 +1,8 @@
-import { HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ApiService } from 'src/app/services/api.service';
 import { SharedService } from 'src/app/services/shared.service';
-import { StorageService } from 'src/app/services/storage.service';
 import { Constants } from 'src/app/utils/constants';
-import { EndPoints } from 'src/app/utils/endpoints';
 import { Interface } from 'src/app/utils/interfaces';
 
 @Component({
@@ -17,7 +13,7 @@ import { Interface } from 'src/app/utils/interfaces';
 export class CreateQuizComponent implements OnInit {
 	categoriesList: Interface.NameId[] = [];
 	difficultyList: Interface.NameValue[] = Constants.difficultyLevelList;
-	questionTypeForm = new FormGroup({
+	questionTypeForm: FormGroup = new FormGroup({
 		category: new FormControl('', [Validators.required]),
 		difficulty: new FormControl('', [Validators.required]),
 	});
@@ -26,29 +22,23 @@ export class CreateQuizComponent implements OnInit {
 	questionsApiPayload: Interface.QuestionApiPayload = { ...Constants.questionsApiPayload };
 
 	constructor(
-		private apiService: ApiService,
 		private sharedService: SharedService,
-		private storageService: StorageService,
 		private router: Router
 	) {}
 
 	/**
-	 * @Created : Tushar Karle
-	 * @Updated : Tushar Karle
 	 * @description: Calls  getCategoryList function to get list of categories
 	 */
-	ngOnInit() {
+	ngOnInit(): void {
 		this.getCategoryList();
 	}
 
 	/**
-	 * @Created : Tushar Karle
-	 * @Updated : Tushar Karle
 	 * @description: It call the get Api for categories and assign the response to categoriesList
 	 */
-	getCategoryList() {
+	getCategoryList(): void {
 		this.sharedService.setShowLoaderStatus(true);
-		this.apiService.callGetApi(EndPoints.categoryList).subscribe(
+		this.sharedService.getAllCategories().subscribe(
 			(response: Interface.TriviaCategories) => {
 				this.sharedService.setShowLoaderStatus(false);
 				if (response?.trivia_categories?.length) {
@@ -62,77 +52,53 @@ export class CreateQuizComponent implements OnInit {
 	}
 
 	/**
-	 * @Created : Tushar Karle
-	 * @Updated : Tushar Karle
 	 * @description: Checks for questionTypeForm validation and gets list of questions as per the selected options and intializes the data accordingly and shuffles the list of answers randomly
 	 */
-	getQuestionsList() {
+	getQuestionsList(): void {
 		this.questionsAnsList = [];
 		if (this.questionTypeForm?.valid) {
 			this.questionsApiPayload.category = String(this.questionTypeForm.value.category);
 			this.questionsApiPayload.difficulty = String(this.questionTypeForm.value.difficulty);
-
 			this.sharedService.setShowLoaderStatus(true);
-			const queryParms: HttpParams | null = this.apiService.prepareRequestParams(this.questionsApiPayload);
-			if (queryParms) {
-				this.apiService.callGetApi(EndPoints.questionsList, queryParms).subscribe(
-					(response: Interface.QuestionResponse) => {
-						this.sharedService.setShowLoaderStatus(false);
-						if (response?.results?.length) {
-							response.results.forEach((questionData: Interface.CategoryQuestion) => {
-								const answersList: Interface.Answer[] = [
-									{
-										title: questionData?.correct_answer,
-										selected: false,
-										correct: true,
-									},
-								];
-								if (Array.isArray(questionData?.incorrect_answers) && questionData?.incorrect_answers?.length) {
-									questionData.incorrect_answers.forEach((answerTitle: string) => {
-										answersList.push({
-											title: answerTitle,
-											selected: false,
-											correct: false,
-										});
-									});
-								}
-								// Shuffle list of answers randomly
-								const randomAnswerList: Interface.Answer[] = answersList.sort(() => {
-									return 0.5 - Math.random();
-								});
-								this.questionsAnsList.push({
-									title: questionData?.question,
-									answerList: randomAnswerList,
-									selected: false,
-								});
+			this.sharedService.getQuestionsList(this.questionsApiPayload).subscribe(
+				(response: Interface.QuestionResponse) => {
+					this.sharedService.setShowLoaderStatus(false);
+					if (response?.results?.length) {
+						response.results.forEach((questionData: Interface.CategoryQuestion) => {
+							const answersList: Interface.Answer[] = [
+								...this.prepareAnswersList([questionData?.correct_answer], true),
+								...this.prepareAnswersList(questionData?.incorrect_answers, false),
+							];
+							// Shuffle list of answers randomly
+							const randomAnswerList: Interface.Answer[] = answersList.sort(() => {
+								return 0.5 - Math.random();
 							});
-						}
-					},
-					() => {
-						this.sharedService.setShowLoaderStatus(false);
+							this.questionsAnsList.push({
+								title: questionData?.question,
+								answerList: randomAnswerList,
+								selected: false,
+							});
+						});
 					}
-				);
-			}
+				},
+				() => {
+					this.sharedService.setShowLoaderStatus(false);
+				}
+			);
 		}
 	}
 
 	/**
-	 * @Created : Tushar Karle
-	 * @Updated : Tushar Karle
 	 * @description: On click of answer button , it updates the array of questions and answers accordingly and updates the selectedAnsCount variable to check if all the questions have answers selected
 	 */
-	selectAnswer(selectedQuestion: Interface.Question, selectedAns: Interface.Answer) {
+	selectAnswer(selectedQuestion: Interface.Question, selectedAns: Interface.Answer): void {
 		this.selectedAnsCount = 0;
 		if (selectedQuestion && selectedAns) {
 			this.questionsAnsList.map((question: Interface.Question) => {
 				if (selectedQuestion?.title === question?.title) {
 					question.selected = true;
 					question.answerList.map((answer: Interface.Answer) => {
-						if (answer?.title === selectedAns?.title) {
-							answer.selected = true;
-						} else {
-							answer.selected = false;
-						}
+						answer.selected = answer?.title === selectedAns?.title ? true : false;
 					});
 				}
 				if (question?.selected) {
@@ -143,12 +109,27 @@ export class CreateQuizComponent implements OnInit {
 	}
 
 	/**
-	 * @Created : Tushar Karle
-	 * @Updated : Tushar Karle
 	 * @description: Stores the list of questions and answers in session storage and navigates to results component
 	 */
-	submit() {
-		this.storageService.setStorage(Constants.questionAnsListTxt, this.questionsAnsList);
+	submit(): void {
+		this.sharedService.setStorage(Constants.questionAnsListTxt, this.questionsAnsList);
 		this.router.navigate([Constants.quizResultRoute]);
+	}
+
+	/**
+	 * @description: Prepare Answers list from the answers title list
+	 */
+	prepareAnswersList(answerTitleList: string[], isCorrect: boolean): Interface.Answer[] {
+		const answersList: Interface.Answer[] = [];
+		if (answerTitleList?.length) {
+			answerTitleList.forEach((answerTitle: string) => {
+				answersList.push({
+					title: answerTitle,
+					selected: false,
+					correct: isCorrect,
+				});
+			});
+		}
+		return answersList;
 	}
 }

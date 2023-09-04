@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SharedService } from 'src/app/services/shared.service';
-import { StorageService } from 'src/app/services/storage.service';
 import { Constants } from 'src/app/utils/constants';
 import { Interface } from 'src/app/utils/interfaces';
 
@@ -16,28 +15,23 @@ export class ResultQuizComponent implements OnInit, OnDestroy {
 
 	constructor(
 		private router: Router,
-		private storageService: StorageService,
 		private sharedService: SharedService
 	) {}
 
 	/**
-	 * @Created : Tushar Karle
-	 * @Updated : Tushar Karle
 	 * @description: Gets the list of questions and answers from session storage and calls processQuestions function
 	 */
-	ngOnInit() {
-		this.questionsAnsList = this.storageService.getStorage(Constants.questionAnsListTxt);
+	ngOnInit(): void {
+		this.questionsAnsList = this.sharedService.getStorage(Constants.questionAnsListTxt);
 		if (this.questionsAnsList?.length) {
 			this.processQuestions();
 		}
 	}
 
 	/**
-	 * @Created : Tushar Karle
-	 * @Updated : Tushar Karle
 	 * @description: Proccess the questions and answers list assigns the class to them based on correct , incorrect ans
 	 */
-	processQuestions() {
+	processQuestions(): void {
 		this.scoreData.correct = 0;
 		this.scoreData.total = this.questionsAnsList?.length;
 		this.questionsAnsList.map((questionData: Interface.Question) => {
@@ -59,21 +53,17 @@ export class ResultQuizComponent implements OnInit, OnDestroy {
 	}
 
 	/**
-	 * @Created : Tushar Karle
-	 * @Updated : Tushar Karle
 	 * @description: Navigate to create quiz page
 	 */
-	createQuiz() {
+	createQuiz(): void {
 		this.router.navigate([Constants.createQuizRoute]);
 	}
 
 	/**
-	 * @Created : Tushar Karle
-	 * @Updated : Tushar Karle
 	 * @description: It empties the list of questions and answer saved in session storage
 	 */
-	ngOnDestroy() {
-		this.storageService.setStorage(Constants.questionAnsListTxt, []);
+	ngOnDestroy(): void {
+		this.sharedService.setStorage(Constants.questionAnsListTxt, []);
 		this.questionsAnsList = [];
 	}
 }
